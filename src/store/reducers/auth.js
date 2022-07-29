@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import * as actions from '../actions/actionCreators';
 
 const initialState = {
-    users: [],
+    members: [],
     loggedInUser: {},
 };
 
@@ -14,8 +14,8 @@ const authReducer = produce((draft = initialState, action) => {
             draft.loggedInUser = payload;
             return draft
         }
-        case actions.FETCH_TODO: {
-            draft.categories.push(payload);
+        case actions.ADD_MEMBER: {
+            draft.members.push(payload);
             return draft
         }
 

@@ -13,8 +13,20 @@ export const login = (data) => {
         } catch (error) {
             console.log('error--->', error)
         }
+    };
+};
 
-
-
+export const addMember = (data) => {
+    return async dispatch => {
+        try {
+            let response = await POST('/api/member', data)
+            console.log('response--->', response)
+            dispatch({
+                type: actions.ADD_MEMBER,
+                payload: response,
+            });
+        } catch (error) {
+            console.log('error--->', error)
+        }
     };
 };

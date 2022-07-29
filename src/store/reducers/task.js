@@ -2,14 +2,14 @@ import { produce } from 'immer';
 import * as actions from '../actions/actionCreators';
 
 const initialState = {
-    task: []
+    tasks: []
 };
 
 const taskReducer = produce((draft = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
-        case 'ultapulta': {
-            draft.expenses.push(payload);
+        case actions.ADD_TASK: {
+            draft.tasks.push(payload);
             return draft;
         }
 
