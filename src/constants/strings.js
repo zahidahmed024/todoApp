@@ -1,7 +1,7 @@
 const strings = {
     name: 'name',
     email: 'email',
-    login: 'login',
+    login: 'Login',
     username: 'username',
     password: 'password',
     update: 'update',
