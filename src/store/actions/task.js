@@ -1,3 +1,4 @@
+import { apiRoutes } from '../../constants';
 import { DELETE, POST, PUT } from '../../utils/ApiCaller';
 import * as actions from './actionCreators';
 
@@ -12,7 +13,7 @@ export const getTodo = (data) => {
 export const addTask = (data) => {
     return async dispatch => {
         try {
-            let response = await POST('/api/task', data)
+            let response = await POST(apiRoutes.task, data)
             //some check then dispatch
             dispatch({
                 type: actions.ADD_TASK,
@@ -26,7 +27,7 @@ export const addTask = (data) => {
 export const updateTask = ({ id, title, description, assignTo, createdAt }) => {
     return async dispatch => {
         try {
-            let response = await PUT(`/api/task/${id}`, { title, description, assignTo, createdAt })
+            let response = await PUT(`${apiRoutes.task}/${id}`, { title, description, assignTo, createdAt })
             //some check then dispatch
             dispatch({
                 type: actions.UPDATE_TASK,
@@ -40,7 +41,7 @@ export const updateTask = ({ id, title, description, assignTo, createdAt }) => {
 export const deleteTask = (id) => {
     return async dispatch => {
         try {
-            let response = await DELETE(`/api/task/${id}`)
+            let response = await DELETE(`${apiRoutes.task}/${id}`)
             //some check then dispatch
             dispatch({
                 type: actions.DELETE_TASK,

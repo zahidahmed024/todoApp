@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { CommonButton, TextInput } from '../components';
+import { strings } from '../constants';
 import { login } from '../store/actions/auth';
 
 export default function LoginPage() {
@@ -16,7 +17,7 @@ export default function LoginPage() {
             dispatch(login({ username, password }))
         }
         else {
-            alert('please fill all fields')
+            alert(strings.please_fill_all_fields)
         }
     }
     return (
@@ -27,20 +28,20 @@ export default function LoginPage() {
             flexDirection: 'column',
             alignItems: 'center',
         }}>
-            <Typography variant='h4' sx={{ marginBottom: 3 }}> Login </Typography>
+            <Typography variant='h4' sx={{ marginBottom: 3 }}> {strings.login} </Typography>
             <TextInput
                 value={username || ''}
                 onChange={e => setUsername(e.target.value)}
-                placeholder='username'
-                label="username"
+                placeholder={strings.username}
+                label={strings.username}
                 variant="outlined"
             />
             <br />
             <TextInput
                 value={password || ''}
                 onChange={e => setPassword(e.target.value)}
-                placeholder='password'
-                label="password"
+                placeholder={strings.password}
+                label={strings.password}
                 variant="outlined"
                 type='password'
             />
@@ -48,7 +49,7 @@ export default function LoginPage() {
             <CommonButton
                 onClick={handleLogin}
                 variant="contained"
-                text='Login'
+                text={strings.login}
             />
         </div>
     )

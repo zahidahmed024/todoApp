@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { CommonButton, Layout, RenderMemberItem } from '../components'
+import { appRoutes, strings } from '../constants';
 import { deleteMember } from '../store/actions/auth';
 export default function MemberPage() {
     const members = useSelector((state) => state.auth.members);
@@ -11,11 +12,11 @@ export default function MemberPage() {
 
     let navigate = useNavigate()
 
-    const handleEdit = useCallback((id) => {
-        navigate(`/create-member/${id}`)
-    }, [])
+    const handleEdit = (id) => {
+        navigate(`${appRoutes.create_member}/${id}`)
+    }
     const handleDelete = useCallback((id) => {
-        if (window.confirm('Are you sure you want to delete?')) {
+        if (window.confirm(strings.are_you_sure_you_want_to_delete)) {
             dispatch(deleteMember(id))
         } else {
         }
@@ -31,11 +32,11 @@ export default function MemberPage() {
                 padding: '20px',
             }}>
                 <CommonButton
-                    text='Create Member'
+                    text={strings.create_member}
                     color="secondary"
                     variant="contained"
                     onClick={() => {
-                        navigate('/create-member')
+                        navigate(appRoutes.create_member)
                     }}
                 />
                 {

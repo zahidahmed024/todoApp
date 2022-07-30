@@ -1,0 +1,22 @@
+const strings = {
+    name: 'name',
+    email: 'email',
+    login: 'login',
+    username: 'username',
+    password: 'password',
+    update: 'update',
+    create: 'create',
+    title: 'title',
+    description: 'description',
+    members: 'members',
+    create_member: 'create member',
+    create_task: 'create task',
+    check: 'check',
+    tasks: 'tasks',
+    dashboard: 'Dashboard',
+    please_fill_name_field: "please fill the name input",
+    please_fill_title: "please fill the title input",
+    please_fill_all_fields: "please fill all fields",
+    are_you_sure_you_want_to_delete: 'Are you sure you want to delete?',
+}
+export default strings

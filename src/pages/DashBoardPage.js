@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { DashboardCard } from '../components';
 import Layout from '../components/Layout';
+import { appRoutes, strings } from '../constants';
 
 export default function DashBoardPage() {
     const navigate = useNavigate();
@@ -22,12 +23,12 @@ export default function DashBoardPage() {
                     justifyContent: 'space-around',
                 }}>
                     <DashboardCard
-                        title={'Members'}
-                        onClick={() => navigate('/member')}
+                        title={strings.members}
+                        onClick={() => navigate(appRoutes.member)}
                     />
                     <DashboardCard
-                        title={'Tasks'}
-                        onClick={() => navigate('/task')}
+                        title={strings.tasks}
+                        onClick={() => navigate(appRoutes.task)}
                     />
                 </div>
             </Box>

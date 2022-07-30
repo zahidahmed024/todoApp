@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CommonButton, Layout, TextInput } from '../components'
+import { appRoutes, strings } from '../constants';
 import { addMember, updateMember } from '../store/actions/auth';
 
 export default function CreateMemberPage() {
@@ -20,7 +21,6 @@ export default function CreateMemberPage() {
     useEffect(() => {
         if (id) {
             let member = members.find((item) => item.id === id)
-            console.log('member', member)
             setUserId(id)
             setName(member.name)
             setEmail(member.email)
@@ -29,8 +29,8 @@ export default function CreateMemberPage() {
 
 
     const handleSubmit = () => {
-        if (!name || !email) {
-            alert('please fill all fields')
+        if (!name) {
+            alert(strings.please_fill_name_field)
             return false
         }
         if (userId) {
@@ -46,7 +46,7 @@ export default function CreateMemberPage() {
         setEmail('');
     }
     const navigateToTaskPage = () => {
-        navigate('/member')
+        navigate(appRoutes.member)
     }
 
     return (
@@ -61,8 +61,8 @@ export default function CreateMemberPage() {
                 <TextInput
                     value={name || ''}
                     onChange={e => setName(e.target.value)}
-                    placeholder='name...'
-                    label="name"
+                    placeholder={strings.name + '...'}
+                    label={strings.name}
                     variant="standard"
                 />
                 <br />
@@ -70,14 +70,14 @@ export default function CreateMemberPage() {
                 <TextInput
                     value={email || ''}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder='email...'
-                    label="email"
+                    placeholder={strings.email + '...'}
+                    label={strings.email}
                     variant="standard"
                     type='email'
                 />
                 <br />
                 <CommonButton
-                    text={userId ? 'Update' : 'Create'}
+                    text={userId ? strings.update : strings.create}
                     color="secondary"
                     onClick={handleSubmit}
                     variant="contained"

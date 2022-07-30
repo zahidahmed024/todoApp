@@ -1,5 +1,6 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material'
 import React from 'react'
+import { strings } from '../constants'
 
 export default function DashBoardCard({ title, onClick }) {
     return (
@@ -10,7 +11,7 @@ export default function DashBoardCard({ title, onClick }) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button onClick={onClick} size="small">Check</Button>
+                <Button onClick={onClick} size="small">{strings.check}</Button>
             </CardActions>
         </Card>
     )

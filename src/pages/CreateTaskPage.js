@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CommonButton, Layout, TextInput } from '../components';
 import Select from 'react-select';
 import { addTask, updateTask } from '../store/actions/task';
+import { appRoutes, strings } from '../constants';
 
 
 export default function Task() {
@@ -19,13 +20,6 @@ export default function Task() {
 
     let navigate = useNavigate()
 
-    const formatOptionLabel = ({ name }) => (
-        <div style={{ display: "flex", alignItems: 'center', borderBottomWidth: 1 }}>
-            <div style={{ marginLeft: "10px", color: "#ccc" }}>
-                <h5 style={{ color: 'black' }}>{name}</h5>
-            </div>
-        </div>
-    );
 
     let { id } = useParams();
     useEffect(() => {
@@ -41,7 +35,7 @@ export default function Task() {
 
     const handleSubmit = () => {
         if (!title) {
-            alert('please fill title')
+            alert(strings.please_fill_title)
             return false
         }
         if (taskId) {
@@ -62,8 +56,16 @@ export default function Task() {
     }
 
     const navigateToTaskPage = () => {
-        navigate('/task')
+        navigate(appRoutes.task)
     }
+
+    const formatOptionLabel = ({ name }) => (
+        <div style={{ display: "flex", alignItems: 'center', borderBottomWidth: 1 }}>
+            <div style={{ marginLeft: "10px", color: "#ccc" }}>
+                <h5 style={{ color: 'black' }}>{name}</h5>
+            </div>
+        </div>
+    );
 
     return (
         <Layout>
@@ -77,16 +79,16 @@ export default function Task() {
                 <TextInput
                     value={title || ''}
                     onChange={e => setTitle(e.target.value)}
-                    placeholder='title...'
-                    label="title"
+                    placeholder={strings.title + '...'}
+                    label={strings.title}
                     variant="standard"
                 />
                 <br />
                 <TextInput
                     value={description || ''}
                     onChange={e => setDescription(e.target.value)}
-                    placeholder='description...'
-                    label="description"
+                    placeholder={strings.description + '...'}
+                    label={strings.description}
                     variant="standard"
                 />
                 <br />
@@ -111,7 +113,7 @@ export default function Task() {
                 </div>
 
                 <CommonButton
-                    text={taskId ? 'update' : 'add'}
+                    text={taskId ? strings.update : strings.create}
                     style={{ textTransform: 'none' }}
                     color="secondary"
                     autoCapitalize={false}

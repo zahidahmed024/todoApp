@@ -76,7 +76,7 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <Link style={{ textDecoration: 'none' }} key={page} to={`/${page}`}>
+                <Link style={{ textDecoration: 'none' }} key={page} to={`/${page.toLowerCase()}`}>
                   <Button
                     key={page}
                     onClick={handleCloseNavMenu}
@@ -110,7 +110,7 @@ const ResponsiveAppBar = () => {
 
           <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { md: 'flex', xs: 'none' } }}>
             {pages.slice(0, 3).map((page) => (
-              <Link key={page} to={`/${page}`}>
+              <Link key={page} to={`/${page.toLowerCase()}`}>
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
@@ -122,7 +122,6 @@ const ResponsiveAppBar = () => {
             ))}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                 <div style={{ color: '#fff' }}><Typography>{user.username}</Typography></div>
                 <KeyboardArrowDownIcon sx={{ color: '#fff' }} />
               </IconButton>

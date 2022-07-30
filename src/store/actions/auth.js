@@ -1,10 +1,11 @@
 import * as actions from './actionCreators';
 import { DELETE, POST, PUT } from '../../utils/ApiCaller';
+import { apiRoutes } from '../../constants';
 
 export const login = (data) => {
     return async dispatch => {
         try {
-            let response = await POST('/api/user', data)
+            let response = await POST(apiRoutes.user, data)
             dispatch({
                 type: actions.LOGIN,
                 payload: response,
@@ -18,7 +19,7 @@ export const login = (data) => {
 export const addMember = (data) => {
     return async dispatch => {
         try {
-            let response = await POST('/api/member', data)
+            let response = await POST(apiRoutes.member, data)
             dispatch({
                 type: actions.ADD_MEMBER,
                 payload: response,
@@ -31,7 +32,7 @@ export const addMember = (data) => {
 export const updateMember = ({ userId, name, email }) => {
     return async dispatch => {
         try {
-            let response = await PUT(`/api/member/${userId}`, { name, email })
+            let response = await PUT(`${apiRoutes.member}/${userId}`, { name, email })
             dispatch({
                 type: actions.UPDATE_MEMBER,
                 payload: response,
@@ -44,7 +45,7 @@ export const updateMember = ({ userId, name, email }) => {
 export const deleteMember = (data) => {
     return async dispatch => {
         try {
-            let response = await DELETE(`/api/member/${data}`)
+            let response = await DELETE(`${apiRoutes.member}/${data}`)
             dispatch({
                 type: actions.DELETE_MEMBER,
                 payload: response,
