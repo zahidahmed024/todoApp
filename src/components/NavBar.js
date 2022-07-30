@@ -13,13 +13,18 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const pages = ['Member', 'Task'];
+const pages = ['Dashboard', 'Member', 'Task', 'Logout'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const user = useSelector((state) => state.auth.loggedInUser);
+
+  let dispatch = useDispatch();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,24 +46,6 @@ const ResponsiveAppBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -89,10 +76,14 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <Link to={`/${page}`}>
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
+                <Link style={{ textDecoration: 'none' }} key={page} to={`/${page}`}>
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block', textTransform: 'capitalize', }}
+                  >
+                    {page}
+                  </Button>
                 </Link>
               ))}
             </Menu>
@@ -116,24 +107,24 @@ const ResponsiveAppBar = () => {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Link to={`/${page}`}>
+
+          <Box sx={{ flexGrow: 1, justifyContent: 'flex-end', display: { md: 'flex', xs: 'none' } }}>
+            {pages.slice(0, 3).map((page) => (
+              <Link key={page} to={`/${page}`}>
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, color: 'white', display: 'block', textTransform: 'capitalize', }}
                 >
                   {page}
                 </Button>
               </Link>
             ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                <div style={{ color: '#fff' }}><Typography>{user.username}</Typography></div>
+                <KeyboardArrowDownIcon sx={{ color: '#fff' }} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -152,14 +143,18 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key={'logout'} onClick={handleCloseUserMenu}>
+              <MenuItem key={'logout'} onClick={() => {
+                handleCloseUserMenu()
+                dispatch({ type: 'LOGOUT' });
+              }
+              }>
                 <Typography textAlign="center">logout</Typography>
               </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 };
 export default ResponsiveAppBar;

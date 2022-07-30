@@ -1,6 +1,7 @@
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Typography } from '@mui/material';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { CommonButton, TextInput } from '../components';
 import { login } from '../store/actions/auth';
 
 export default function LoginPage() {
@@ -10,41 +11,45 @@ export default function LoginPage() {
     const dispatch = useDispatch()
 
 
-    useEffect(() => {
-
-    }, []);
+    const handleLogin = () => {
+        if (username && password) {
+            dispatch(login({ username, password }))
+        }
+        else {
+            alert('please fill all fields')
+        }
+    }
     return (
-        <div>
-            <p>username: {JSON.stringify(username)}</p>
-            <p>password: {JSON.stringify(password)}</p>
-            <TextField
+        <div style={{
+            display: 'flex',
+            height: '80vh',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+        }}>
+            <Typography variant='h4' sx={{ marginBottom: 3 }}> Login </Typography>
+            <TextInput
                 value={username || ''}
                 onChange={e => setUsername(e.target.value)}
-                placeholder='usename'
-                label="Standard warning"
-                variant="standard"
-                // color="warning"
-                focused
+                placeholder='username'
+                label="username"
+                variant="outlined"
             />
             <br />
-            <TextField
+            <TextInput
                 value={password || ''}
                 onChange={e => setPassword(e.target.value)}
                 placeholder='password'
-                label="Standard warning"
-                variant="standard"
-                // color="warning"
-                focused
+                label="password"
+                variant="outlined"
+                type='password'
             />
             <br />
-            <Button
-                color="secondary"
-                onClick={() => {
-                    dispatch(login({ username, password }))
-                }}
-                variant="contained">
-                login
-            </Button>
+            <CommonButton
+                onClick={handleLogin}
+                variant="contained"
+                text='Login'
+            />
         </div>
     )
 }

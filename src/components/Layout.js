@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { NavBar } from '../components';
+import React from 'react'
+import { NavBar, Footer } from '../components';
 export default function Layout({ children }) {
     return (
-        <div className='flex-1 flex-col'>
+        <div>
             <NavBar />
             <div>{children}</div>
+            <Footer />
         </div>
     )
 }

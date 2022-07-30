@@ -1,9 +1,7 @@
 import React from 'react'
-import { Provider, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Provider, } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { AuthRoutes, GuestRoutes } from './navigations'
-import { LoginPage, DashBoardPage, StartUpPage } from './pages'
+import { StartUpPage } from './pages'
 import { persistor, store } from './store'
 export default function App() {
   // const user = useSelector((state) => state.auth.loggedInUser);

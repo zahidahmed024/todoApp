@@ -1,11 +1,7 @@
-import { Avatar, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { Layout } from '../components'
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { CommonButton, Layout, RenderMemberItem } from '../components'
 import { deleteMember } from '../store/actions/auth';
 export default function MemberPage() {
     const members = useSelector((state) => state.auth.members);
@@ -16,7 +12,6 @@ export default function MemberPage() {
     let navigate = useNavigate()
 
     const handleEdit = useCallback((id) => {
-        // alert(id)
         navigate(`/create-member/${id}`)
     }, [])
     const handleDelete = useCallback((id) => {
@@ -27,30 +22,33 @@ export default function MemberPage() {
     }, [])
     return (
         <Layout>
-            {/* <h4>members: {JSON.stringify(members)}</h4> */}
-            {/* <h4>tasks: {JSON.stringify(tasks)}</h4> */}
-            <Button
-                color="secondary"
-                onClick={() => {
-                    // alert('MemberPage')/
-                    navigate('/create-member')
-                }}
-                variant="contained">
-                add member
-            </Button>
-            <div>
+            <div style={{
+                display: 'flex',
+                width: '100%',
+                height: '80vh',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '20px',
+            }}>
+                <CommonButton
+                    text='Create Member'
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => {
+                        navigate('/create-member')
+                    }}
+                />
                 {
-                    members.map((member, index) => {
+                    members.map((member) => {
                         return (
-                            <div key={member.id}>
-                                <RenderItem
-                                    name={member.name}
-                                    taskCount={(tasks.filter((task) => task.assignTo?.id === member.id)).length}
-                                    onClickTitle={() => handleEdit(member.id)}
-                                    onClickEdit={() => handleEdit(member.id)}
-                                    onClickDelete={() => handleDelete(member.id)}
-                                />
-                            </div>
+                            <RenderMemberItem
+                                key={member.id}
+                                name={member.name}
+                                taskCount={(tasks.filter((task) => task.assignTo?.id === member.id)).length}
+                                onClickTitle={() => handleEdit(member.id)}
+                                onClickEdit={() => handleEdit(member.id)}
+                                onClickDelete={() => handleDelete(member.id)}
+                            />
                         )
                     })
                 }
@@ -59,26 +57,4 @@ export default function MemberPage() {
     )
 }
 
-function RenderItem({ name, taskCount, onClickTitle, onClickEdit, onClickDelete }) {
-    return (
-        <div style={{
-            width: '50%',
-        }}>
-            <ListItem>
-                <ListItemText
-                    onClick={onClickTitle}
-                    primary={name}
-                    secondary={`number of tasks : ${taskCount || 0}`}
 
-                />
-                <IconButton onClick={onClickEdit}>
-                    <EditIcon />
-                </IconButton>
-                <IconButton>
-                    <DeleteIcon onClick={onClickDelete} />
-                </IconButton>
-            </ListItem>
-            <Divider />
-        </div>
-    )
-}

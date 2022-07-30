@@ -1,10 +1,7 @@
-import { Button, Divider, IconButton, ListItem, ListItemText } from '@mui/material';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { Layout } from '../components'
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { Layout, CommonButton, RenderTaskItem } from '../components'
 import { deleteTask } from '../store/actions/task';
 
 export default function TaskPage() {
@@ -18,55 +15,42 @@ export default function TaskPage() {
         } else {
         }
     }
+    const navigateToTaskPage = (id) => {
+        navigate(`/create-task/${id}`)
+    }
     return (
         <Layout>
-            <h3 onClick={() => navigate('/create-task')}>{JSON.stringify(tasks)}</h3>
-            <Button
-                color="secondary"
-                onClick={() => navigate('/create-task')}
-                variant="contained">
-                create task
-            </Button>
-            {
-                tasks.map((task, index) => {
-                    return <RenderItem
-                        key={task.id}
-                        title={task.title}
-                        createdAt={task.createdAt}
-                        assignTo={task.assignTo?.name || 'no assign'}
-                        onClickEdit={() => navigate(`/create-task/${task.id}`)}
-                        onClickDelete={() => handleDelete(task.id)}
-                    />
-                })
-            }
-            {/* <h5>tasks: {JSON.stringify(tasks)} </h5> */}
+            {/* <h3 onClick={() => navigate('/create-task')}>{JSON.stringify(tasks)}</h3> */}
+            <div style={{
+                display: 'flex',
+                width: '100%',
+                height: '80vh',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '20px',
+            }}>
+                <CommonButton
+                    text='Create Task'
+                    color="secondary"
+                    onClick={() => navigate('/create-task')}
+                    variant="contained"
+                />
+
+                {
+                    tasks.map((task, index) => {
+                        return <RenderTaskItem
+                            key={task.id}
+                            title={task.title}
+                            createdAt={task.createdAt}
+                            description={task.description}
+                            assignTo={task.assignTo?.name || 'no assign'}
+                            onClickEdit={() => navigateToTaskPage(task.id)}
+                            onClickDelete={() => handleDelete(task.id)}
+                        />
+                    })
+                }
+            </div>
         </Layout>
     )
 }
 
-function RenderItem({ title, createdAt, assignTo, onClickEdit, onClickDelete }) {
-    return (
-        <div style={{
-            width: '50%',
-        }}>
-            <ListItem>
-                <ListItemText
-                    primary={title}
-                />
-                <ListItemText
-                    primary={`created at : ${createdAt}`}
-                />
-                <ListItemText
-                    primary={`assign to : ${assignTo}`}
-                />
-                <IconButton onClick={onClickEdit}>
-                    <EditIcon />
-                </IconButton>
-                <IconButton>
-                    <DeleteIcon onClick={onClickDelete} />
-                </IconButton>
-            </ListItem>
-            <Divider />
-        </div>
-    )
-}

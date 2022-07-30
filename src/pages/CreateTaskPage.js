@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Layout } from '../components';
+import { CommonButton, Layout, TextInput } from '../components';
 import Select from 'react-select';
 import { addTask, updateTask } from '../store/actions/task';
-import { Button, FormControl, TextField } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-// import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 export default function Task() {
     const [title, setTitle] = useState('');
@@ -24,9 +20,9 @@ export default function Task() {
     let navigate = useNavigate()
 
     const formatOptionLabel = ({ name }) => (
-        <div style={{ display: "flex", }}>
+        <div style={{ display: "flex", alignItems: 'center', borderBottomWidth: 1 }}>
             <div style={{ marginLeft: "10px", color: "#ccc" }}>
-                {name}
+                <h5 style={{ color: 'black' }}>{name}</h5>
             </div>
         </div>
     );
@@ -41,11 +37,13 @@ export default function Task() {
             setAssignTo(task.assignTo)
             setCreatedAt(task.createdAt)
         }
-        console.log('task', task)
     }, []);
-    console.log('task id', id)
 
     const handleSubmit = () => {
+        if (!title) {
+            alert('please fill title')
+            return false
+        }
         if (taskId) {
             dispatch(updateTask({
                 id: taskId,
@@ -54,73 +52,73 @@ export default function Task() {
                 assignTo,
                 createdAt,
             }))
+            // some check then navigate to task page
+            navigateToTaskPage()
         } else {
             dispatch(addTask({ title, description, assignTo }))
+            // some check then navigate to task page
+            navigateToTaskPage()
         }
     }
+
+    const navigateToTaskPage = () => {
+        navigate('/task')
+    }
+
     return (
         <Layout>
-            <div>createdAt : {JSON.stringify(createdAt)}</div>
-            <div>tasks : {JSON.stringify(tasks)}</div>
-            {/* <p>halsodoasod</p> */}
-
-            <p>date now: {(new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ")}</p>
-            <p>name: {title}</p>
-            <p>description: {description}</p>
-            <p>assignTo: {JSON.stringify(assignTo)}</p>
-            <TextField
-                value={title || ''}
-                onChange={e => setTitle(e.target.value)}
-                placeholder='title...'
-                label="Standard warning"
-                variant="standard"
-                // color="warning"
-                focused
-            />
-            <br />
-            <TextField
-                value={description || ''}
-                onChange={e => setDescription(e.target.value)}
-                placeholder='description...'
-                label="Standard warning"
-                variant="standard"
-                // color="warning"
-                focused
-            />
-
-            <br />
             <div style={{
-                width: '120px',
+                display: 'flex',
+                height: '80vh',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '80px'
             }}>
-                <Select
-                    options={[{ id: '', name: 'none' }, ...members]}
-                    value={assignTo}
-                    defaultValue={assignTo}
-                    styles={{
-                        option: (provided, state) => ({
-                            backgroundColor: 'white',
-                        }),
+                <TextInput
+                    value={title || ''}
+                    onChange={e => setTitle(e.target.value)}
+                    placeholder='title...'
+                    label="title"
+                    variant="standard"
+                />
+                <br />
+                <TextInput
+                    value={description || ''}
+                    onChange={e => setDescription(e.target.value)}
+                    placeholder='description...'
+                    label="description"
+                    variant="standard"
+                />
+                <br />
+                <div style={{
+                    width: '190px',
+                    paddingBottom: '10px'
+                }}>
+                    <Select
+                        filterOption={(option, rawInput) => option?.data?.name.toLowerCase().includes(rawInput.toLowerCase())}
 
+                        options={[{ id: '', name: 'none' }, ...members]}
+                        value={assignTo}
+                        defaultValue={assignTo}
+                        styles={{
+                            option: (provided, state) => ({
+                                backgroundColor: 'white',
+                            }),
+                        }}
+                        formatOptionLabel={formatOptionLabel}
+                        onChange={value => setAssignTo(value)}
+                    />
+                </div>
 
-                    }}
-
-                    formatOptionLabel={formatOptionLabel}
-                    onChange={value => setAssignTo(value)}
+                <CommonButton
+                    text={taskId ? 'update' : 'add'}
+                    style={{ textTransform: 'none' }}
+                    color="secondary"
+                    autoCapitalize={false}
+                    onClick={handleSubmit}
+                    variant="contained"
                 />
             </div>
-            {/* <button onClick={() => {
-
-                // console.log({ username, password })
-                dispatch(addTask({ title, description, assignTo }))
-            }}>add</button> */}
-            <Button
-                style={{ textTransform: 'none' }}
-                color="secondary"
-                autoCapitalize={false}
-                onClick={handleSubmit}
-                variant="contained">
-                create
-            </Button>
         </Layout >
     )
 }
