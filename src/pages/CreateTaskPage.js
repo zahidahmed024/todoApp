@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from '../components';
 import Select from 'react-select';
-import { addTask } from '../store/actions/task';
+import { addTask, updateTask } from '../store/actions/task';
 import { Button, FormControl, TextField } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,11 +12,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 export default function Task() {
     const [title, setTitle] = useState('');
+    const [taskId, setTaskId] = useState('');
     const [description, setDescription] = useState('');
-    const [assignTo, setAssignTo] = useState({ id: "", name: 'select' });
+    const [createdAt, setCreatedAt] = useState('');
+    const [updatedAt, setUpdatedAt] = useState('');
+    const [assignTo, setAssignTo] = useState({ id: '', name: 'select' });
     const members = useSelector((state) => state.auth.members);
     const tasks = useSelector((state) => state.task.tasks);
     const dispatch = useDispatch()
+
     let navigate = useNavigate()
 
     const formatOptionLabel = ({ name }) => (
@@ -27,17 +31,37 @@ export default function Task() {
         </div>
     );
 
-    const [age, setAge] = React.useState('');
+    let { id } = useParams();
+    useEffect(() => {
+        let task = tasks.find((task) => task.id === id)
+        if (id) {
+            setTaskId(id)
+            setTitle(task.title)
+            setDescription(task.description)
+            setAssignTo(task.assignTo)
+            setCreatedAt(task.createdAt)
+        }
+        console.log('task', task)
+    }, []);
+    console.log('task id', id)
 
-    const handleChange = (event) => {
-        console.log(event.target);
-        setAge(event.target.value);
-    };
-
+    const handleSubmit = () => {
+        if (taskId) {
+            dispatch(updateTask({
+                id: taskId,
+                title,
+                description,
+                assignTo,
+                createdAt,
+            }))
+        } else {
+            dispatch(addTask({ title, description, assignTo }))
+        }
+    }
     return (
         <Layout>
-            <div>members : {JSON.stringify(members)}</div>
-            {/* <div>tasks : {JSON.stringify(tasks)}</div> */}
+            <div>createdAt : {JSON.stringify(createdAt)}</div>
+            <div>tasks : {JSON.stringify(tasks)}</div>
             {/* <p>halsodoasod</p> */}
 
             <p>date now: {(new Date()).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ")}</p>
@@ -69,7 +93,7 @@ export default function Task() {
                 width: '120px',
             }}>
                 <Select
-                    options={members}
+                    options={[{ id: '', name: 'none' }, ...members]}
                     value={assignTo}
                     defaultValue={assignTo}
                     styles={{
@@ -93,7 +117,7 @@ export default function Task() {
                 style={{ textTransform: 'none' }}
                 color="secondary"
                 autoCapitalize={false}
-                onClick={() => dispatch(addTask({ title, description, assignTo }))}
+                onClick={handleSubmit}
                 variant="contained">
                 create
             </Button>

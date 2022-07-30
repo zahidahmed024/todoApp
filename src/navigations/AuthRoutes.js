@@ -8,8 +8,10 @@ export default function AuthRoutes() {
             <Route path="/" element={<DashBoardPage />} />
             <Route path="/task" element={<TaskPage />} />
             <Route path="/member" element={<MemberPage />} />
-            <Route path="/create-task" element={<CreateTaskPage />} />
             <Route path="/create-member" element={<CreateMemberPage />} />
+            <Route path="/create-member/:id" element={<CreateMemberPage />} />
+            <Route path="/create-task" element={<CreateTaskPage />} />
+            <Route path="/create-task/:id" element={<CreateTaskPage />} />
         </Routes>
     )
 }

@@ -1,23 +1,29 @@
 import { Avatar, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import React, { useCallback } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { Layout } from '../components'
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { deleteMember } from '../store/actions/auth';
 export default function MemberPage() {
     const members = useSelector((state) => state.auth.members);
     const tasks = useSelector((state) => state.task.tasks);
 
+    const dispatch = useDispatch()
+
     let navigate = useNavigate()
 
     const handleEdit = useCallback((id) => {
-        alert(id)
-        // navigate(`/member/${id}`)
+        // alert(id)
+        navigate(`/create-member/${id}`)
     }, [])
     const handleDelete = useCallback((id) => {
-        // navigate(`/member/${id}`)
+        if (window.confirm('Are you sure you want to delete?')) {
+            dispatch(deleteMember(id))
+        } else {
+        }
     }, [])
     return (
         <Layout>
@@ -40,8 +46,9 @@ export default function MemberPage() {
                                 <RenderItem
                                     name={member.name}
                                     taskCount={(tasks.filter((task) => task.assignTo?.id === member.id)).length}
+                                    onClickTitle={() => handleEdit(member.id)}
                                     onClickEdit={() => handleEdit(member.id)}
-                                    onClickDelete={() => { alert(JSON.stringify(member.id)) }}
+                                    onClickDelete={() => handleDelete(member.id)}
                                 />
                             </div>
                         )
@@ -52,16 +59,17 @@ export default function MemberPage() {
     )
 }
 
-function RenderItem({ name, taskCount, onClickEdit, onClickDelete }) {
+function RenderItem({ name, taskCount, onClickTitle, onClickEdit, onClickDelete }) {
     return (
         <div style={{
             width: '50%',
         }}>
             <ListItem>
                 <ListItemText
+                    onClick={onClickTitle}
                     primary={name}
                     secondary={`number of tasks : ${taskCount || 0}`}
-                    
+
                 />
                 <IconButton onClick={onClickEdit}>
                     <EditIcon />

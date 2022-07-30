@@ -1,18 +1,26 @@
 import { Button, Divider, IconButton, ListItem, ListItemText } from '@mui/material';
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { Layout } from '../components'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { deleteTask } from '../store/actions/task';
 
 export default function TaskPage() {
     const navigate = useNavigate()
     const tasks = useSelector((state) => state.task.tasks);
+    const dispatch = useDispatch();
 
+    const handleDelete = (id) => {
+        if (window.confirm('Are you sure you want to delete?')) {
+            dispatch(deleteTask(id))
+        } else {
+        }
+    }
     return (
         <Layout>
-            {/* <h3 onClick={() => navigate('/create-task')}>create task</h3> */}
+            <h3 onClick={() => navigate('/create-task')}>{JSON.stringify(tasks)}</h3>
             <Button
                 color="secondary"
                 onClick={() => navigate('/create-task')}
@@ -26,8 +34,8 @@ export default function TaskPage() {
                         title={task.title}
                         createdAt={task.createdAt}
                         assignTo={task.assignTo?.name || 'no assign'}
-                        onClickEdit={() => alert(JSON.stringify(task.id))}
-                        onClickDelete={() => { alert(JSON.stringify(task.id)) }}
+                        onClickEdit={() => navigate(`/create-task/${task.id}`)}
+                        onClickDelete={() => handleDelete(task.id)}
                     />
                 })
             }
