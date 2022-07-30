@@ -15,12 +15,12 @@ export default function MemberPage() {
     const handleEdit = (id) => {
         navigate(`${appRoutes.create_member}/${id}`)
     }
-    const handleDelete = useCallback((id) => {
+    const handleDelete = (id) => {
         if (window.confirm(strings.are_you_sure_you_want_to_delete)) {
             dispatch(deleteMember(id))
         } else {
         }
-    }, [])
+    }
     return (
         <Layout>
             <div style={{
